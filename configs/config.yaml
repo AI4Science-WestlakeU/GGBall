@@ -1,0 +1,14 @@
+defaults:
+  - _self_
+  - general: general_default
+  - model: HGVAE
+  - train: train_default
+  - dataset: qm9
+  - flow_train: train
+  - loss: AE
+
+hydra:
+  job:
+    chdir: True
+  run:
+    dir: ../outputs/${general.name}-${dataset.name}/${general.task}/${now:%Y-%m-%d}/${now:%H-%M-%S}

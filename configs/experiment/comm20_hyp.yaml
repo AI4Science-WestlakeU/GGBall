@@ -1,0 +1,60 @@
+# @package _global_
+general:
+    name : 'comm20_${loss.name}_${loss.codebook_size}code_hyp${model.hyp_channels}_euc${model.euc_channels}_decode_${model.decode_method}'
+    gpus : 1
+    wandb: 'online'
+    resume: null            # If resume, path to ckpt file from outputs directory in main directory
+    test_only: null
+    check_val_every_n_epochs: 100
+    sample_every_val: 5
+    samples_to_generate: 20
+    samples_to_save: 20
+    chains_to_save: 1
+    log_every_steps: 50
+    number_chain_steps: 50        # Number of frames in each gif
+    final_model_samples_to_generate: 20
+    final_model_samples_to_save:
+    final_model_chains_to_save: 10
+model:
+    euc_channels: 0
+    hyp_channels: 32
+    extra_features: 'all'
+    decode_method: 'pairwise_interaction'
+    transformer_encoder:
+        Hypformer_use: true
+        trans_dropout: 0.1
+    transformer_decoder:
+        Hypformer_use: true
+        trans_dropout: 0.1
+        trans_num_layers: 2
+VAE:
+    lambda_euc2node: 0.0 #
+    lambda_euc2edge: 0.0 #
+    lambda_hyp2node: 1.0
+    lambda_hyp2edge: 1.0
+    lambda_consistency_node: 0.0 #
+    lambda_consistency_edge: 0.0 #
+train:
+    n_epochs: 1000000
+    batch_size: 256
+    save_model: True
+    lr_scheduler:
+        _target_: torch.optim.lr_scheduler.CosineAnnealingLR
+        T_max: 1000000
+        eta_min: 1e-5
+flow_train:
+    test_only: false
+    scheduler: null
+    train:
+        pl_trainer:
+            max_epochs: 50000
+    optim:
+        lr_scheduler:
+            T_max: 50000
+    integrate:
+        num_steps: 101
+    batch_size:
+        train: 256
+        val: 128
+        test: 128
+    VAE_checkpoint: None

@@ -1,0 +1,16 @@
+name: "AE"
+lambda_euc2node: 0.5 #
+lambda_euc2edge: 0.5 #
+lambda_hyp2node: 0.5 #
+lambda_hyp2edge: 0.5 #
+lambda_consistency_node: 0.1 #
+lambda_consistency_edge: 0.1 #
+lambda_kl: 0.0 # kl loss
+lambda_l2: 0.0005 # l2 loss
+lambda_band_norm: 0.0
+lambda_vq_loss_weight: 0.0
+codebook_size: 0
+lambda_commitment_weight: 0.0
+lambda_orthogonal_reg_weight: 0.0
+use_riemannian_optimizer: false
+use_kmeans: false

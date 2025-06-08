@@ -1,0 +1,167 @@
+data: hyperbolic
+use_wandb: true
+test_only: false
+
+AR_sample:
+  svq_temp: 1.0
+  use_prior_count: false
+  use_discrete_codebook: false
+# scheduler: null
+batch_size:
+  train: 256
+  val: 128
+  test: 128
+
+core:
+  tags:
+    - ${now:%Y-%m-%d}
+
+model:
+  manifold: "PoincareBall"    # "Lorentz"
+  d_model: 512
+  num_layers: 5
+  actfn: swish
+  fourier: null
+  atol: 1e-6
+  rtol: 1e-6
+  metric_normalize: True
+  # HGVAE: settings
+  k_in: 0.6 # it is same as c_HGCN, 'manifold_in curvature'
+  k_hidden: 1.0 # 'manifold_hidden curvature'
+  k_out: 1.0 # 'manifold_out curvature'
+  in_channels: 128 # it is same as dim
+  hidden_channels: ${model.latent_channels} # 'hidden channels'
+  edge_dim: ${model.hyp_channels}
+  out_channels: 4
+  trans_num_layers: 6 # 'number of layers for all-pair attention'
+  trans_num_heads: 1
+  trans_dropout: 0.2 #'transformer dropout'
+  trans_use_bn: 1
+  trans_use_residual: 1 # 'use residual link for each transformer layer or not'
+  trans_use_act: 1 # 'use activation for each transformer layer or not'
+  trans_use_weight: 1 # 'use weight for transformer convolution or not'
+  add_positional_encoding: 1 # 'add positional encoding or not'
+  attention_type: "linear_focused" #'attention type: linear_focused, or full'
+  power_k: 1.0 # 'power k for query and key'
+  trans_heads_concat: 0 # 'concatenate multi-head attentions or not'
+  c: 0.6
+  act: "relu" # 'activation function'
+  add_time_encoding: True
+
+optim:
+  optimizer:
+    _target_: torch.optim.AdamW
+    lr: 0.0005
+    weight_decay: 0.0
+  # Hyperbolic Optimizer
+  optimizer_hyp:
+    _target_: geoopt.optim.RiemannianAdam
+    lr: 0.005
+    weight_decay: 0.0
+    stabilize: 10
+  lr_scheduler:
+    _target_: torch.optim.lr_scheduler.CosineAnnealingLR
+    T_max: 1000
+    eta_min: 1e-5
+  interval: epoch
+  ema_decay: 0.999
+
+integrate:
+  div_mode: rademacher # "exact" is an alternative
+  method: vt_prediction # x1_prediction, euler
+  num_steps: 100
+  normalize_loglik: True # this is normalized by dimension
+  inference_anneal_slope: 0.0
+  inference_anneal_offset: 0.0
+
+val:
+  compute_nll: false
+
+test:
+  compute_nll: false
+  compute_loss: true
+
+train:
+  # reproducibility
+  deterministic: warn
+  random_seed: 42
+
+  # load_checkpoint: null
+  load_checkpoint: null
+  manual_setting:
+    gradient_clip_val: 0.5
+    gradient_clip_algorithm: value
+  # training
+  pl_trainer:
+    fast_dev_run: False # Enable this for debug purposes
+    # strategy: ddp
+    # devices: auto
+    devices: 1
+    accelerator: gpu
+    precision: 32
+    # max_steps: 10000
+    max_epochs: 1000
+    accumulate_grad_batches: 1
+    num_sanity_val_steps: 1
+    # gradient_clip_val: 0.5
+    # gradient_clip_algorithm: value
+    profiler: simple
+
+  monitor_metric: "val/loss" # "val/nll"
+  monitor_metric_mode: min
+
+  # early_stopping:
+  #   patience: ${data.early_stopping_patience}
+  #   verbose: False
+
+  model_checkpoints:
+    save_top_k: 5
+    verbose: False
+    save_last: False
+
+  # every_n_epochs_checkpoint:
+  #   every_n_epochs: 100
+  #   save_top_k: -1
+  #   verbose: False
+  #   save_last: False
+
+logging:
+  # log frequency
+  val_check_interval: 5
+  wandb:
+    project: hypeflow-${general.name}
+    entity: null
+    log_model: True
+    mode: "online"
+    group: ${hydra:runtime.choices.model}-${hydra:runtime.choices.vectorfield}
+
+  wandb_watch:
+    log: all
+    log_freq: 500
+
+  lr_monitor:
+    logging_interval: step
+    log_momentum: False
+
+early_stopping_patience: 200 # this is affected by val_every
+
+# use_wandb: False
+
+resume: null
+
+seed: 0
+
+# val_every: 1000
+ckpt_every: null
+# visualize: False
+
+eval_projx: True
+local_coords: True
+
+lightning_module:
+  module_class: HypeFlow # specify the PyTorch Lightning module class
+
+VAE_checkpoint: None
+Flow_checkpoint: None
+
+source_distribution: set1-0.04 

@@ -1,0 +1,20 @@
+# Training settings
+n_epochs: 500
+batch_size: 512
+lr: 0.0005
+clip_grad: 1 # float, null to disable
+save_model: True
+num_workers: 0
+ema_decay: 0 # 'Amount of EMA decay, 0 means off. A reasonable value  is 0.999.'
+progress_bar: false
+weight_decay: 1e-12
+optimizer: adamw # adamw,nadamw,nadam => nadamw for large batches, see http://arxiv.org/abs/2102.06356 for the use of nesterov momentum with large batches
+seed: 0
+dropout: 0.2
+lr_scheduler:
+  _target_: torch.optim.lr_scheduler.CosineAnnealingLR
+  T_max: 1000
+  eta_min: 1e-5
+interval: epoch
+# Model settings
+hyper_model: "HGVAE"

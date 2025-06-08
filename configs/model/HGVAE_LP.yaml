@@ -1,0 +1,25 @@
+# Model settings
+type: "HGVAE"
+model: "graph_hyper"
+manifold: "PoincareBall" # 'which manifold to use, can be any of [Hyperboloid, PoincareBall]'
+encoder: "HGCN" # 'which encoder to use, can be any of [Shallow, MLP, HNN, GCN, GAT, HyperGCN]'
+decoder: "LinearDecoder"
+lpdecoder: "LPDecoder"
+r: 2 # fermi-dirac decoder parameter
+t: 1 # fermi-dirac decoder parameter
+c: 0.6 # it only used in HNN, not in HGCN, hyperbolic radius, set to None for trainable curvature
+
+lambda_node: 0.0 # node reconstruction loss
+lambda_edge: 0.0 # edge reconstruction loss
+
+num_layers: 2 #'number of hidden layers in encoder'
+n_heads: 4 # 'number of attention heads for graph attention networks, must be a divisor dim'
+bias: 0 # 'whether to use bias (1) or not (0)'
+use_att: 0 # 'whether to use hyperbolic attention or not'
+local_agg: 0 # 'whether to local tangent space aggregation or not'
+act: "relu" # 'activation function'
+dim: 16 # 'dimension of the hidden layers'
+feat_dim: 1 # 'it is a placeholder, and will be update in the process, dimension of the input features'
+node_classes: 4 # 'number of classes for node classification'
+edge_classes: 4 # 'number of classes for edge classification'
+

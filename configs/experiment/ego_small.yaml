@@ -1,0 +1,42 @@
+# @package _global_
+general:
+    name : 'ego_small'
+    gpus : 1
+    wandb: 'online'
+    resume: null            # If resume, path to ckpt file from outputs directory in main directory
+    test_only: null
+    check_val_every_n_epochs: 100
+    check_val_every_n_epochs_flow: 100
+    sample_every_val: 5
+    samples_to_generate: 40
+    samples_to_save: 9
+    chains_to_save: 1
+    final_model_samples_to_generate: 40
+    final_model_samples_to_save: 30
+    final_model_chains_to_save: 20
+train:
+    n_epochs: 50000 
+    batch_size: 32
+    save_model: True
+flow_train:
+    test_only: false
+    scheduler: null
+    train:
+        pl_trainer:
+            max_epochs: 50000
+    optim:
+        lr_scheduler:
+            T_max: 50000
+    integrate:
+        num_steps: 11
+    batch_size:
+        train: 256
+        val: 128
+        test: 128
+    # train:
+    #     load_checkpoint: /root/projects/HypeFlow/outputs/ego_small-ego_small/VAE/2025-01-24/08-43-38/every_n_epochs/epoch=299-step=300.ckpt
+    lightning_module:
+        # encoder_checkpoint: /root/projects/HypeFlow/outputs/ego_small-ego_small/VAE/2025-01-24/07-53-56/checkpoints/ego_small/epoch=899-batch_loss=0.00.ckpt
+        # VAE, 4 edge dimension
+        encoder_checkpoint: /root/projects/HypeFlow/outputs/ego_small-ego_small/VAE/2025-01-24/08-06-43/checkpoints/ego_small/epoch=1099-batch_loss=0.00.ckpt 
+        # VAE, 3 edge dimension

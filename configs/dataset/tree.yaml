@@ -1,0 +1,10 @@
+name: tree
+remove_h: null
+datadir: 'data/tree/'
+debug: false
+flow:
+  train_max_epochs: 100
+  batch_size:
+    train: 256
+    val: 1024
+    test: 512

@@ -1,0 +1,4 @@
+name: ego_small
+remove_h: null
+datadir: 'data/ego_small/'
+debug: false

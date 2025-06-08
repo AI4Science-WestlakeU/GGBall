@@ -1,0 +1,61 @@
+# @package _global_
+general:
+  name: 'zinc_${loss.name}_${loss.codebook_size}code_hyp${model.hyp_channels}_euc${model.euc_channels}_${model.decode_method}decode'
+  gpus: 1
+  wandb: "online"
+  resume: null # If resume, path to ckpt file from outputs directory in main directory
+  test_only: null
+  check_val_every_n_epochs: 10
+  check_val_every_n_epochs_flow: 10
+  sample_every_val: 3
+  samples_to_generate: 512
+  samples_to_save: 512
+  chains_to_save: 1
+  final_model_samples_to_generate: 512
+  final_model_samples_to_save: 512
+  final_model_chains_to_save: 20
+model:
+    euc_channels: 0
+    hyp_channels: 8
+    latent_channels: 8 # latent poincare space
+    extra_features: 'all'
+    decode_method: 'pairwise_interaction'
+    transformer_encoder:
+        Hypformer_use: true
+        trans_dropout: 0.1
+    transformer_decoder:
+        Hypformer_use: true
+        trans_dropout: 0.1
+        trans_num_layers: 2
+train:
+    n_epochs: 50000 
+    batch_size: 512
+    save_model: True
+    lr_scheduler:
+        _target_: torch.optim.lr_scheduler.CosineAnnealingLR
+        T_max: 50000
+        eta_min: 1e-5
+flow_train:
+  test_only: false
+  scheduler: null
+  model:
+    # edge_dim: {model.hyp_channels}
+    trans_num_heads: 1
+  train:
+    pl_trainer:
+      max_epochs: 50000
+  optim:
+    lr_scheduler:
+      T_max: 1000
+  integrate:
+    num_steps: 101
+  batch_size:
+    train: 512
+    val: 256
+    test: 128
+  lightning_module:
+    module_class: HypeFlow # specify the PyTorch Lightning module class
+    encoder_checkpoint: /zhenghaoren/HypeFlow/src/outputs/qm9-qm9/VAE/2025-04-22/13-28-44/checkpoints/qm9/epoch=59-batch_loss=0.00.ckpt
+dataset:
+  shuffle: True  # 控制是否shuffle
+  drop_last: True  # 控制是否丢弃不完整batch

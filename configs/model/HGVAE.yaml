@@ -1,0 +1,83 @@
+# Model settings
+type: "HGVAE"
+model: "graph_hyper"
+manifold: "PoincareBall" # 'which manifold to use, can be any of [Hyperboloid, PoincareBall]'
+use_poincare: True
+extra_features: "all"
+shuffle_dense_graph: False
+add_time_encoding: False
+
+decode_method: "pairwise_interaction" #"pairwise_distance", "pairwise_interaction", "inner_product", "fermi_dirac"
+# decode_method: "pairwise_distance"
+# decode_method: "inner_product"
+# decode_method: "logmap"
+# decode_method: "logmap_symmetry"
+# Latent Space configuration
+euc_channels: 128 # 'hidden channels'
+hyp_channels: 4
+
+# LGCN settings
+r: 2 # fermi-dirac decoder parameter
+t: 1 # fermi-dirac decoder parameter
+c: 0.6
+num_layers: 2 #'number of hidden layers in encoder'
+n_heads: 4 # 'number of attention heads for graph attention networks, must be a divisor dim'
+bias: 0 # 'whether to use bias (1) or not (0)'
+use_att: 0 # 'whether to use hyperbolic attention or not'
+local_agg: 0 # 'whether to local tangent space aggregation or not'
+act: "relu" # 'activation function'
+dim: 16 # 'dimension of the hidden layers'
+feat_dim: 1 # 'it is a placeholder, and will be update in the process, dimension of the input features'
+k_in: 2 # it is same as c_HGCN, 'manifold_in curvature',  1/0.6
+k_hidden: 1.0 # 'manifold_hidden curvature'
+k_out: 1.0 # 'manifold_out curvature'
+k_poin_out: 1.0 #'manifold_poin curvature'
+mid_channels: 64 # 'middle channels'
+latent_channels: 128
+lgcn_in_channels: None
+lgcn_out_channels: None
+lgcn_in_edge_channels: None
+edge_classes: None
+node_classes: None
+prior_std: 1 # 'prior std '
+codebook_size: ${loss.codebook_size}
+use_resnet: False
+use_layernorm: False
+sample_codebook_temp: None
+
+# Hypformer Layer
+transformer_encoder:
+  Hypformer_use: false
+  trans_num_layers: 8 # 'number of layers for all-pair attention'
+  trans_num_heads: 4
+  trans_dropout: 0.2 #'transformer dropout'
+  trans_use_bn: 1
+  trans_use_residual: 1 # 'use residual link for each transformer layer or not'
+  trans_use_act: 1 # 'use activation for each transformer layer or not'
+  trans_use_weight: 1 # 'use weight for transformer convolution or not'
+  add_positional_encoding: 1 # 'add positional encoding or not'
+  max_seq_len: 100
+  use_hyperbolic_attention: true
+  attention_activation: "exp"
+  attention_type: "distance" #'attention type: linear_focused, or full'
+  power_k: 1.0 # 'power k for query and key'
+  trans_heads_concat: 0 # 'concatenate multi-head attentions or not'
+  use_pe: true
+
+transformer_decoder:
+  Hypformer_use: false
+  trans_num_layers: 8 # 'number of layers for all-pair attention'
+  trans_num_heads: 4
+  trans_dropout: 0.2 #'transformer dropout'
+  trans_use_bn: 1
+  trans_use_residual: 1 # 'use residual link for each transformer layer or not'
+  trans_use_act: 1 # 'use activation for each transformer layer or not'
+  trans_use_weight: 1 # 'use weight for transformer convolution or not'
+  add_positional_encoding: 1 # 'add positional encoding or not'
+  max_seq_len: 100
+  use_hyperbolic_attention: true
+  attention_activation: "exp"
+  attention_type: "distance" #'attention type: linear_focused, or full'
+  power_k: 1.0 # 'power k for query and key'
+  trans_heads_concat: 0 # 'concatenate multi-head attentions or not'
+  use_pe: true

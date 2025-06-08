@@ -1,0 +1,62 @@
+name: HypeFlow
+channels:
+  - nvidia
+  - pytorch
+  - conda-forge
+  - defaults
+  - pyg
+dependencies:
+  # Riemannian FM
+  - python==3.9
+  - pytorch==2.1.0
+  - pytorch-cuda==11.8
+  - omegaconf==2.3.0
+  - overrides==7.3.1
+  - igl==2.2.1
+  - meshplot==0.4.0
+  - matplotlib
+  - jupyter==1.0.0
+  - numpy==1.26.4
+  - pandas==2.2.0
+  - pip
+  - tqdm==4.66.2
+  - torchmetrics==1.2.1
+  # ours
+  - conda-forge::yaml==0.2.5
+  - pyg::pyg==2.4.0
+  - pyg::pytorch-scatter
+  - pyg::pytorch-sparse
+  - pyg::pytorch-cluster
+  - pyg::pytorch-spline-conv
+  - pip:
+    # DiGress
+    - imageio==2.31.1
+    - networkx==2.8.7
+    - PyGSP==0.5.1
+    - pyemd==1.0.0
+    # Riemannian FM
+    - submitit==1.5.1
+    - pre-commit==3.6.1
+    - black==22.6.0
+    - ipykernel==6.29.2
+    - torchdiffeq==0.2.3
+    - scikit-learn==1.4.0
+    - pytorch-lightning==2.0.4
+    - hydra-core==1.2.0
+    - hydra-submitit-launcher==1.2.0
+    - hydra_colorlog==1.2.0
+    - click==8.1.7
+    - wandb
+    - geoopt==0.5.0
+    - biopython==1.83
+    - pyevtk==1.6.0
+    - ipympl==0.9.3
+    # DiffCSP
+    - pyshtools==4.10.4  # versions ~4.11 fail to build
+    - pyxtal==0.6.1
+    - chemparse==0.1.3
+    - einops==0.7.0
+    - -e .
+    # from here below, we use find-links
+    - --find-links https://data.pyg.org/whl/torch-2.1.0+cu118.html
+    - pyg_lib

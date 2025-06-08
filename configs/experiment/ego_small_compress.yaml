@@ -1,0 +1,35 @@
+# @package _global_
+general:
+    name : 'ego_small_compress'
+    gpus : 1
+    wandb: 'online'
+    resume: null            # If resume, path to ckpt file from outputs directory in main directory
+    test_only: null
+    check_val_every_n_epochs: 100
+    check_val_every_n_epochs_flow: 100
+    sample_every_val: 5
+    samples_to_generate: 40
+    samples_to_save: 9
+    chains_to_save: 1
+    final_model_samples_to_generate: 40
+    final_model_samples_to_save: 30
+    final_model_chains_to_save: 20
+train:
+    n_epochs: 50000 
+    batch_size: 32
+    save_model: True
+flow_train:
+    scheduler: null
+    pl_trainer:
+        max_epochs: 50000
+    optim:
+        lr_scheduler:
+            T_max: 5000
+    integrate:
+        num_steps: 11
+    batch_size:
+        train: 256
+        val: 128
+        test: 128
+    lightning_module:
+        encoder_checkpoint: /root/code/HypeFlow/outputs/ego_small_compress-ego_small/VAE/2025-01-22/07-52-47/checkpoints/ego_small_compress/epoch=499-batch_loss=0.00.ckpt

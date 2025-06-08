@@ -1,0 +1,15 @@
+name: "zinc" # qm9, qm9_positional
+datadir: "data/zinc/"
+remove_h: null
+filter: False
+random_subset: null
+pin_memory: False
+debug: false
+flow:
+  train_max_epochs: 100
+  batch_size:
+    train: 256
+    val: 256
+    test: 256
+
+check_val_every_n_epochs: 2
