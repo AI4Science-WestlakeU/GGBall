@@ -1,4 +1,6 @@
-# GGBall
+# GGBall: Graph Generative Model on Poincaré Ball (ICLR 2026)
+
+[[paper](https://openreview.net/forum?id=4zRRnDscqn)]][[arXiv](https://arxiv.org/abs/2506.07198)]
 
 ## Environment installation
 This code was tested with PyTorch 2.0.1, cuda 11.8 and torch_geometrics 2.3.1
@@ -63,4 +65,16 @@ not available yet, we would be very happy if you could send them to us!
 ## Troubleshooting 
 
 `PermissionError: [Errno 13] Permission denied: './GGBall/analysis/orca/orca'`: You probably did not compile orca.
+
+## Citation
+Please cite the work using:
+
+@inproceedings{
+  bu2026ggball,
+  title={{GGB}all: Graph Generative Model on Poincar\'e Ball},
+  author={Tianci Bu and Chuanrui Wang and Hao Ma and Haoren Zheng and Xin Lu and Tailin Wu},
+  booktitle={The Fourteenth International Conference on Learning Representations},
+  year={2026},
+  url={https://openreview.net/forum?id=4zRRnDscqn}
+}
     
